@@ -13,20 +13,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import ru.me.da.builder.TridentTopologyBuilder;
+import ru.me.da.kafka.KafkaAdmin;
+import ru.me.da.kafka.KafkaConsumerBuilder;
+import ru.me.da.kafka.KafkaProducerBuilder;
 import ru.me.da.model.LogMessage;
 import ru.me.da.model.LogRate;
 import ru.me.da.util.Const;
 import ru.me.da.util.Utils;
-import ru.me.da.kafka.KafkaAdmin;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -42,8 +41,8 @@ public class TopologyTest {
     private static String logTopic = "log-topic";
     private static String testTopic = "test-topic";
 
-    private static String kafkaBrokers = "192.168.173.131:9092";
-    private static String zk = "192.168.173.131:2185";
+    private static String kafkaBrokers = "hbasehost:9092";
+    private static String zk = "hbasehost:2185";
 
     private static String topologyName = "trident-test-topology";
 
@@ -153,7 +152,7 @@ public class TopologyTest {
         }
     }
 
-    @Test(groups = "integration", testName = "Kafka test")
+    @Test(testName = "Kafka test")
     public void kafkaTest() throws IOException, InterruptedException, TimeoutException {
         logger.info("---===Kafka TEST===---");
 
@@ -167,14 +166,19 @@ public class TopologyTest {
                 logger.info("Topic {} exist!", topic);
             }
         }
+        //kafkaAdmin.close();
+        String json = new DataGenerator().getJson(1);
 
-//        KafkaProducer<String, String> producer = getKafkaProdBuilder().withType(KafkaProducer.TYPE_SYNC).build(String.class, String.class);
-//        String json = new DataGenerator().getJson(1);
-//        producer.sendMessage(testTopic, "json-log", json);
-//        logger.info("MESSAGE SENDED!!!");
-//        KafkaMessage km = receiveKafkaMessage(testTopic);
-//        logger.info("MESSAGE RECEIVED!!!");
-//        assertEquals(json, km.getValue());
+        KafkaProducerBuilder kpb = new KafkaProducerBuilder(kafkaBrokers);
+        kpb.send(testTopic, json);
+        kpb.close();
+        logger.info("MESSAGE SENDED!!!");
+
+        KafkaConsumerBuilder kcb = new KafkaConsumerBuilder(zk, testTopic);
+        String message = kcb.receiveMessage();
+        logger.info("MESSAGE RECEIVED!!!");
+
+        assertEquals(json, message);
     }
 
     //@Test(groups = "integration", testName = "Topology test", priority = 1)

@@ -1,6 +1,7 @@
 package ru.me.da.kafka;
 
 import kafka.admin.AdminUtils;
+import kafka.utils.ZKStringSerializer$;
 import org.I0Itec.zkclient.ZkClient;
 
 import java.util.Properties;
@@ -10,12 +11,10 @@ import java.util.Properties;
  */
 public class KafkaAdmin {
 
-    private String zk;
     private ZkClient zkClient;
 
     public KafkaAdmin(String zk) {
-        this.zk = zk;
-        this.zkClient = new ZkClient(zk, 5000, 5000);
+        this.zkClient = new ZkClient(zk, 5000, 5000, ZKStringSerializer$.MODULE$);
     }
 
     public void createTopic(String name) {
@@ -24,6 +23,10 @@ public class KafkaAdmin {
 
     public boolean topicExists(String name) {
         return AdminUtils.topicExists(zkClient, name);
+    }
+
+    public void close() {
+        zkClient.close();
     }
 
 }
