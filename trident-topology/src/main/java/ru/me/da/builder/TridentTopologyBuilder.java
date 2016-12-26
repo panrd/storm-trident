@@ -29,6 +29,9 @@ public class TridentTopologyBuilder extends TridentTopology {
 
     private static Logger logger = LoggerFactory.getLogger(TridentTopologyBuilder.class);
 
+    private static int windowSize = 60;
+    private static int intervalLen = 60;
+
     private static String zk = "hbasehost:2185";
 
     public TridentTopologyBuilder() {
@@ -40,8 +43,8 @@ public class TridentTopologyBuilder extends TridentTopology {
             Configuration conf = HBaseConfiguration.create();
             Stream stream = this.newStream("trident-stream", LogKafkaSpout.newSpout(zk, "log-topic", StreamField.SPOUT_IN_TUPLE_STR));
 
-            BaseWindowedBolt.Duration duration = new BaseWindowedBolt.Duration(10, TimeUnit.SECONDS);
-            BaseWindowedBolt.Duration interval = new BaseWindowedBolt.Duration(10, TimeUnit.SECONDS);
+            BaseWindowedBolt.Duration duration = new BaseWindowedBolt.Duration(windowSize, TimeUnit.SECONDS);
+            BaseWindowedBolt.Duration interval = new BaseWindowedBolt.Duration(intervalLen, TimeUnit.SECONDS);
 
             //Хранение всех tuples в 1 окне для последующей обработки на узлах топологии
             Map<String, Object> hconf = new HashMap<>();
@@ -52,7 +55,10 @@ public class TridentTopologyBuilder extends TridentTopology {
             //Конфиг Kafka alert топика
             TridentKafkaStateFactory stateFactory = new LogKafkaProduceFactory().build();
             stream.parallelismHint(2)
-                    .each(StreamField.SPOUT_IN_TUPLE, new KafkaLogConverter(), StreamField.LOG_OBJECTS)
+                    .each(
+                            StreamField.SPOUT_IN_TUPLE,
+                            new KafkaLogConverter(),
+                            StreamField.LOG_OBJECTS)
                     .slidingWindow(
                             duration,
                             interval,
@@ -64,7 +70,8 @@ public class TridentTopologyBuilder extends TridentTopology {
                             StreamField.RAW_LOG_OBJECTS,
                             new LogEventCounter(conf),
                             StreamField.LOG_RATE)
-                    .each(StreamField.LOG_RATE,
+                    .each(
+                            StreamField.LOG_RATE,
                             new LevelExtractor(Const.ERROR, 1),
                             StreamField.of(StreamField.FILTERED_LEVEL, StreamField.FILTERED_RATE))
                     .each(
