@@ -7,11 +7,12 @@
     <groupId>ru.me.da</groupId>
     <artifactId>kyc-trident-topology</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <modules>
         <module>trident-producer-test</module>
         <module>trident-consumer-test</module>
+        <module>trident-topology</module>
     </modules>
 
     <properties>
@@ -170,22 +171,22 @@
                         <version>1.0-SNAPSHOT</version>
                         <configuration>
                         </configuration>
-                        <executions>
-                            <execution>
-                                <id>start Docker</id>
-                                <goals>
-                                    <goal>docker-run</goal>
-                                </goals>
-                                <phase>pre-integration-test</phase>
-                            </execution>
-                            <execution>
-                                <id>stop Docker</id>
-                                <goals>
-                                    <goal>docker-stop</goal>
-                                </goals>
-                                <phase>post-integration-test</phase>
-                            </execution>
-                        </executions>
+                        <!--<executions>-->
+                            <!--<execution>-->
+                                <!--<id>start Docker</id>-->
+                                <!--<goals>-->
+                                    <!--<goal>docker-run</goal>-->
+                                <!--</goals>-->
+                                <!--<phase>pre-integration-test</phase>-->
+                            <!--</execution>-->
+                            <!--<execution>-->
+                                <!--<id>stop Docker</id>-->
+                                <!--<goals>-->
+                                    <!--<goal>docker-stop</goal>-->
+                                <!--</goals>-->
+                                <!--<phase>post-integration-test</phase>-->
+                            <!--</execution>-->
+                        <!--</executions>-->
                     </plugin>
 
                 </plugins>
