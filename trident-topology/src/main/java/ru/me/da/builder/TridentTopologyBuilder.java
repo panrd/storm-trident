@@ -40,8 +40,8 @@ public class TridentTopologyBuilder extends TridentTopology {
             Configuration conf = HBaseConfiguration.create();
             Stream stream = this.newStream("trident-stream", LogKafkaSpout.newSpout(zk, "log-topic", StreamField.SPOUT_IN_TUPLE_STR));
 
-            BaseWindowedBolt.Duration duration = new BaseWindowedBolt.Duration(1, TimeUnit.SECONDS);
-            BaseWindowedBolt.Duration interval = new BaseWindowedBolt.Duration(1, TimeUnit.SECONDS);
+            BaseWindowedBolt.Duration duration = new BaseWindowedBolt.Duration(10, TimeUnit.SECONDS);
+            BaseWindowedBolt.Duration interval = new BaseWindowedBolt.Duration(10, TimeUnit.SECONDS);
 
             //Хранение всех tuples в 1 окне для последующей обработки на узлах топологии
             Map<String, Object> hconf = new HashMap<>();
