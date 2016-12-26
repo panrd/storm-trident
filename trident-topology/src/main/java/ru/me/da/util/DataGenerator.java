@@ -1,4 +1,4 @@
-package ru.me.da;
+package ru.me.da.util;
 
 import com.google.gson.Gson;
 import ru.me.da.model.LogMessage;
@@ -73,8 +73,8 @@ public class DataGenerator {
         msg.setHost(hosts[rnd.nextInt(hosts.length)]);
 
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MINUTE, rnd.nextInt(50));
-        cal.set(Calendar.SECOND, rnd.nextInt(50));
+        cal.set(Calendar.MINUTE, rnd.nextInt(10));
+        cal.set(Calendar.SECOND, rnd.nextInt(10));
         cal.set(Calendar.MILLISECOND, 0);
 
         msg.setTimestamp(cal.getTimeInMillis());

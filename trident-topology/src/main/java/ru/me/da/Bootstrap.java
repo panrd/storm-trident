@@ -1,14 +1,18 @@
 package ru.me.da;
 
 import org.apache.storm.Config;
-import org.apache.storm.StormSubmitter;
+import org.apache.storm.LocalCluster;
 import org.apache.storm.trident.TridentTopology;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.me.da.builder.TridentTopologyBuilder;
 
 /**
  * Created by Pavel Popov on 18.11.2016.
  */
 public class Bootstrap {
+
+    private static Logger logger = LoggerFactory.getLogger(Bootstrap.class);
 
     private static String topologyName = "logger-topology";
 
@@ -17,12 +21,14 @@ public class Bootstrap {
 
             TridentTopology topology = new TridentTopologyBuilder();
 
-            Config config = new Config();
+            LocalCluster cluster = new LocalCluster();
+            logger.info("Start local cluster");
 
+            Config config = new Config();
             config.setDebug(false);
             config.setNumWorkers(2);
 
-            StormSubmitter.submitTopology(topologyName, config, topology.build());
+            cluster.submitTopology(topologyName, config, topology.build());
 
         } catch (Exception ex) {
             ex.printStackTrace();

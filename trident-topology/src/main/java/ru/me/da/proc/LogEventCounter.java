@@ -213,7 +213,7 @@ public class LogEventCounter extends BaseAggregator<LogEventCounter.LogEventStat
                 put = new Put(buildRowKey(level, host));
                 put.add("metrics".getBytes(), "count".getBytes(), count.toString().getBytes());
                 put.add("metrics".getBytes(), "rate".getBytes(), rate.toString().getBytes());
-                logger.error("SUCCEED STORE: {}", level + "#" + host);
+                //logger.error("SUCCEED STORE: {}", level + "#" + host);
             } catch (Exception ioex) {
                 logger.error(ioex.getLocalizedMessage(), ioex);
             }

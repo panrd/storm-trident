@@ -19,6 +19,7 @@ import ru.me.da.kafka.KafkaProducerBuilder;
 import ru.me.da.model.LogMessage;
 import ru.me.da.model.LogRate;
 import ru.me.da.util.Const;
+import ru.me.da.util.DataGenerator;
 import ru.me.da.util.Utils;
 
 import java.io.IOException;
@@ -181,7 +182,7 @@ public class TopologyTest {
         assertEquals(json, message);
     }
 
-    @Test(testName = "Topology test", priority = 1)
+    //@Test(testName = "Topology test", priority = 1)
     public void testTopology() throws IOException, InterruptedException, TimeoutException {
 
 

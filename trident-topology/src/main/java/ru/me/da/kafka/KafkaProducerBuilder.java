@@ -22,6 +22,7 @@ public class KafkaProducerBuilder {
         props.put("linger.ms", 1);
         props.put("producer.type", "sync");
         props.put("buffer.memory", 33554432);
+        props.put("max.request.size", 209715200);
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         producer = new KafkaProducer<>(props);
