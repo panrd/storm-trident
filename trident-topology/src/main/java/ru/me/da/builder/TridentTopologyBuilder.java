@@ -29,8 +29,8 @@ public class TridentTopologyBuilder extends TridentTopology {
 
     private static Logger logger = LoggerFactory.getLogger(TridentTopologyBuilder.class);
 
-    private static int windowSize = 60;
-    private static int intervalLen = 60;
+    private static int windowSize = 10;
+    private static int intervalLen = 10;
 
     private static String zk = "hbasehost:2185";
 

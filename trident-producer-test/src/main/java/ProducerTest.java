@@ -3,6 +3,8 @@ import org.slf4j.LoggerFactory;
 import ru.me.da.kafka.KafkaProducerBuilder;
 import ru.me.da.util.DataGenerator;
 
+import java.util.Random;
+
 /**
  * Created by Pavel Popov on 26.12.2016.
  */
@@ -11,9 +13,11 @@ public class ProducerTest {
     private static Logger logger = LoggerFactory.getLogger(ProducerTest.class);
 
     private static String LOG_TOPIC;
+    private static Random rnd;
 
     static {
         LOG_TOPIC = "log-topic";
+        rnd = new Random();
     }
 
     public static void main(String[] args) {
@@ -22,7 +26,7 @@ public class ProducerTest {
         Runtime.getRuntime().addShutdownHook(new Thread(kpb::close));
         try {
             for (; ; ) {
-                int capacity = 300;//rnd.nextInt(100);
+                int capacity = rnd.nextInt(1000);
                 if (capacity == 0) {
                     capacity = 1;
                 }
