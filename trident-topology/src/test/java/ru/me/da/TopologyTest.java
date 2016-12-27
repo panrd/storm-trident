@@ -124,7 +124,7 @@ public class TopologyTest {
                 logger.info("Topic {} exist!", topic);
             }
         }
-        //kafkaAdmin.close();
+        kafkaAdmin.close();
         String json = new DataGenerator().getJson(1);
 
         KafkaProducerBuilder kpb = new KafkaProducerBuilder(kafkaBrokers);
@@ -139,11 +139,8 @@ public class TopologyTest {
         assertEquals(json, message);
     }
 
-    //@Test(testName = "Topology test", priority = 1)
+    @Test(testName = "Topology test", priority = 1)
     public void testTopology() throws IOException, InterruptedException, TimeoutException {
-
-
-        //KafkaProducer<String, String> producer = getKafkaProdBuilder().withType(KafkaProducer.TYPE_SYNC).build(String.class, String.class);
 
         TridentTopology topology = new TridentTopologyBuilder();
         Config config = buildTopologyConfig();
@@ -151,7 +148,6 @@ public class TopologyTest {
         LocalCluster cluster = new LocalCluster();
         logger.info("Start local cluster");
         cluster.submitTopology(topologyName, config, topology.build());
-        //Thread.sleep(3000);
         Thread.sleep(10000);
         List<LogMessage> testList = new ArrayList<>();
         testList.add(new LogMessage(1000l, "host1", "ERROR", "text1"));
@@ -163,18 +159,12 @@ public class TopologyTest {
         testList.add(new LogMessage(6500l, "host1", "ERROR", "text4"));
         testList.add(new LogMessage(7700l, "host1", "ERROR", "text4"));
         testList.add(new LogMessage(1040l, "host2", "ERROR", "text5"));
-//        testList.add(new LogMessage(10400l, "host222", "ERROR", "text5"));
-//        testList.add(new LogMessage(16410l, "host222", "ERROR", "text5"));
-       // testList.add(new LogMessage(1020l, "host2", "ERROR", "text6"));
-     //   testList.add(new LogMessage(1030l, "host2", "INFO", "text6"));
 
         String json_1 = Utils.objectToJson(testList);
 
         KafkaProducerBuilder kpb = new KafkaProducerBuilder(kafkaBrokers);
         kpb.send(logTopic, json_1);
-        //kpb.close();
-
-       // Thread.sleep(10000);
+        kpb.close();
 
         KafkaConsumerBuilder kcb = new KafkaConsumerBuilder(zk, alertTopic);
         String message = kcb.receiveMessage();
@@ -182,7 +172,7 @@ public class TopologyTest {
         logger.info(message);
         List<LogRate> rates = Utils.jsonToRateList(message);
         assertNotNull(rates);
-        assertEquals(rates.size(), 2);
+        assertEquals(rates.size(), 1);
         for (LogRate rate : rates) {
 
             if ("host1".equals(rate.getValue())) {
