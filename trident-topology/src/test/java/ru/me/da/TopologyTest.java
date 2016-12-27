@@ -47,49 +47,6 @@ public class TopologyTest {
 
     private static String topologyName = "trident-test-topology";
 
-//    private KafkaProducerBuilder getKafkaProdBuilder() {
-//        logger.info("Creating a producer for kafka brokers: {}", kafkaBrokers);
-//        return KafkaProducerBuilder.aProducer()
-//                .withType(KafkaProducer.TYPE_ASYNC)
-//                .withBrokerList(kafkaBrokers)
-//                .withKeySerializer("kafka.serializer.StringEncoder")
-//                .withMessageSerializer("kafka.serializer.StringEncoder");
-//    }
-//
-//    private KafkaMessage receiveKafkaMessage(String topic) throws InterruptedException {
-//        final KafkaConsumerSession consumerSession = aSession()
-//                .withTopic(topic)
-//                .withGroup("group_iq")
-//                .withZookeeperConnect(zk)
-//                .withAutoOffsetReset(OFFSET_SMALLEST)
-//                .withParallelism(1).build();
-//
-//        final KafkaMessage[] kafkaMessageHolder = new KafkaMessage[1];
-//        final Lock messageLock = new ReentrantLock();
-//        final Condition messageReceivedCondition = messageLock.newCondition();
-//
-//        messageLock.lock();
-//        try {
-//            consumerSession.open((key, value) -> {
-//                String keyString = byteArrayToString(key);
-//                kafkaMessageHolder[0] = new KafkaMessage(keyString, new String(value));
-//                messageLock.lock();
-//                try {
-//                    messageReceivedCondition.signalAll();
-//                } finally {
-//                    messageLock.unlock();
-//                }
-//            });
-//
-//            messageReceivedCondition.await();
-//            consumerSession.close();
-//        } finally {
-//            messageLock.unlock();
-//        }
-//
-//        return kafkaMessageHolder[0];
-//    }
-
     private String byteArrayToString(byte[] data) {
         return data == null ? null : new String(data);
     }

@@ -40,7 +40,7 @@ public class LogAggregator extends BaseAggregator<LogAggregator.State> {
     @Override
     public void aggregate(State val, TridentTuple tuple, TridentCollector collector) {
         try {
-            logger.info("log aggregate");
+            //logger.info("log aggregate");
             if (!tuple.isEmpty()) {
                 List<LogMessage> partitionList = (List<LogMessage>) tuple.get(0);
                 val.logCollection.addAll(partitionList);

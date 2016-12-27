@@ -48,6 +48,7 @@ public class TridentTopologyBuilder extends TridentTopology {
 
             //Хранение всех tuples в 1 окне для последующей обработки на узлах топологии
             Map<String, Object> hconf = new HashMap<>();
+            hconf.put(Const.KEYVALUE_MAXSIZE, Const.KEYVALUE_MAXSIZE_1G);
             hconf.put(Const.HBASE_CONFIGURATION_ZOOKEEPER_QUORUM, "hbasehost");
             hconf.put(Const.HBASE_CONFIGURATION_ZOOKEEPER_CLIENTPORT, 2181);
             WindowsStoreFactory wsf = new HBaseWindowsStoreFactory(hconf, "window_tuples_t1", "cf".getBytes("UTF-8"), "tuples".getBytes("UTF-8"));

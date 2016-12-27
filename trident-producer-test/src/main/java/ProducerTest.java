@@ -26,7 +26,7 @@ public class ProducerTest {
         Runtime.getRuntime().addShutdownHook(new Thread(kpb::close));
         try {
             for (; ; ) {
-                int capacity = rnd.nextInt(1000);
+                int capacity = 10000;//rnd.nextInt(1000);
                 if (capacity == 0) {
                     capacity = 1;
                 }

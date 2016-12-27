@@ -55,6 +55,7 @@ public class LogEventCounter extends BaseAggregator<LogEventCounter.LogEventStat
     public LogEventState init(Object batchId, TridentCollector collector) {
         if (tableThreadLocal == null) {
             Configuration conf = HBaseConfiguration.create();
+            conf.setInt(Const.KEYVALUE_MAXSIZE, Const.KEYVALUE_MAXSIZE_1G);
             conf.set(Const.HBASE_CONFIGURATION_ZOOKEEPER_QUORUM, "hbasehost");
             conf.setInt(Const.HBASE_CONFIGURATION_ZOOKEEPER_CLIENTPORT, 2181);
             tableThreadLocal = new ThreadLocal<HTable>() {

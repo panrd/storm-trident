@@ -15,4 +15,8 @@ public class Const {
 
     public static final String HBASE_CONFIGURATION_ZOOKEEPER_QUORUM = "hbase.zookeeper.quorum";
     public static final String HBASE_CONFIGURATION_ZOOKEEPER_CLIENTPORT = "hbase.zookeeper.property.clientPort";
+    public static final String KEYVALUE_MAXSIZE = "hbase.client.keyvalue.maxsize";
+
+    public static final int KEYVALUE_MAXSIZE_100M = 100 * 1024 * 1024;
+    public static final int KEYVALUE_MAXSIZE_1G = 1000 * 1024 * 1024;
 }
