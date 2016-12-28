@@ -2,7 +2,6 @@ package ru.me.da.util;
 
 import com.google.gson.Gson;
 import ru.me.da.model.LogMessage;
-import ru.me.da.util.Const;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,7 +12,6 @@ import java.util.Random;
  * Created by Pavel Popov on 06.12.2016.
  */
 public class DataGenerator {
-    private static String LOG_TOPIC;
     private static String[] levels;
     private static String[] hosts;
     private static String[] texts;
@@ -21,7 +19,6 @@ public class DataGenerator {
     private static Gson gson;
 
     static {
-        LOG_TOPIC = "log-topic";
         levels = new String[]{
                 Const.DEBUG,
                 Const.ERROR,
@@ -44,11 +41,16 @@ public class DataGenerator {
         };
 
         texts = new String[]{
-                "Kafka Streams is a Java library for building distributed stream processing apps using Apache Kafka",
-                "So what did we learn? Lots. One of the key misconceptions we had was that stream processing would be used in a way sort of like a real-time MapReduce layer",
-                "Using the Kafka APIs directly works well for simple things.",
-                "The first aspect of how Kafka Streams makes building streaming services simpler is that it is cluster and framework free—it is just a library.",
-                "The next key way Kafka Streams simplifies streaming applications is that it fully integrates the concepts of tables and streams."
+                "Message #1",
+                "Message #2",
+                "Message #3",
+                "Message #4",
+                "Message #5",
+                "Message #6",
+                "Message #7",
+                "Message #8",
+                "Message #9",
+                "Message #10"
         };
         rnd = new Random();
         gson = new Gson();
@@ -73,9 +75,9 @@ public class DataGenerator {
         msg.setHost(hosts[rnd.nextInt(hosts.length)]);
 
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MINUTE, rnd.nextInt(50));
-        cal.set(Calendar.SECOND, rnd.nextInt(50));
-        cal.set(Calendar.MILLISECOND, 0);
+        cal.set(Calendar.MINUTE, rnd.nextInt(59));
+        cal.set(Calendar.SECOND, rnd.nextInt(59));
+        cal.set(Calendar.MILLISECOND, rnd.nextInt(999));
 
         msg.setTimestamp(cal.getTimeInMillis());
         msg.setText(texts[rnd.nextInt(texts.length)]);
