@@ -123,3 +123,82 @@ hosts файл:
 Для этого, в файле `/lib/systemd/system/docker.service` параметр запуска должен выглядеть примерно так:
 
 `ExecStart=/usr/bin/dockerd -H unix:///var/run/docker.sock -H tcp://[IP машины с докером] -H tcp://127.0.0.1`
+
+**Banchmarks**
+
+Платформа, на которой было проведено тестирование:
+
+HBase: VMWare Player, Centos 6.8, CPU , 1Gb Xmx
+
+Kafka: VMWare Player, Centos 6.8, CPU , 1Gb Xmx
+
+Storm: локальная топология, Xmx4G, CPU Core i5 2.3GHz
+
+Источник сообщений генерирует сообщения, которые пишутся в kafka топик из 5 потоков с интервалом 100мс и в объёме от 0 до 10000 сообщений в каждом из потоков (мат. ожидание = 5000 сообщений/поток)
+Trident топология собирает сообщения скользящим окном длительностью 10 секунд, т.о. в среднем одним окном обрабатывается около 500000 сообщений.  
+
+Алгоритм расчёта частоты сообщений реализует линейную сложность.
+
+Сориентироваться по производительности топологии для данной задачи можно по логам:
+
+<pre>
+SUCCEED STORE 50 MESSAGES - <i>кол-во сообщений сохранённых в HBase</i>
+376 ms - <i>время работы алгоритма</i>
+Approx throughput:823969 msg/sec - <i>грубая оценка производительности в 1 сек</i>
+Messages proceed number: 310000 - <i>общее кол-во обработанных сообщений из топика одном окном</i>
+
+SUCCEED STORE 50 MESSAGES
+114 ms
+Approx throughput:1760390 msg/sec
+Messages proceed number: 200000
+
+SUCCEED STORE 50 MESSAGES
+14 ms
+Approx throughput:694429 msg/sec
+Messages proceed number: 10000
+
+SUCCEED STORE 50 MESSAGES
+50 ms
+Approx throughput:2612177 msg/sec
+Messages proceed number: 130000
+
+SUCCEED STORE 50 MESSAGES
+280 ms
+Approx throughput:1463761 msg/sec
+Messages proceed number: 410000
+
+SUCCEED STORE 50 MESSAGES
+77 ms
+Approx throughput:1557991 msg/sec
+Messages proceed number: 120000
+
+SUCCEED STORE 50 MESSAGES
+220 ms
+Approx throughput:1818172 msg/sec
+Messages proceed number: 400000
+
+SUCCEED STORE 50 MESSAGES
+40 ms
+Approx throughput:2241447 msg/sec
+Messages proceed number: 90000
+
+SUCCEED STORE 50 MESSAGES
+123 ms
+Approx throughput:2037102 msg/sec
+Messages proceed number: 250000
+
+SUCCEED STORE 50 MESSAGES
+141 ms
+Approx throughput:1911428 msg/sec
+Messages proceed number: 270000
+
+SUCCEED STORE 50 MESSAGES
+206 ms
+Approx throughput:1310817 msg/sec
+Messages proceed number: 270000
+
+SUCCEED STORE 50 MESSAGES
+215 ms
+Approx throughput:884112 msg/sec
+Messages proceed number: 190000
+</pre>

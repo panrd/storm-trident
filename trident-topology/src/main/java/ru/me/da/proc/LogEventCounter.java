@@ -142,7 +142,7 @@ public class LogEventCounter extends BaseAggregator<LogEventCounter.LogEventStat
             try {
                 if (!puts.isEmpty()) {
                     table.put(puts);
-                    logger.error("SUCCEED STORE {} MESSAGES", puts.size());
+                    logger.info("SUCCEED STORE {} MESSAGES", puts.size());
                 }
             } catch (IOException ioex) {
                 logger.error(ioex.getLocalizedMessage(), ioex);

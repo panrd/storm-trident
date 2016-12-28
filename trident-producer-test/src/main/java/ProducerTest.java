@@ -22,7 +22,7 @@ public class ProducerTest {
     static {
         rnd = new Random();
         LOG_TOPIC = "log-topic";
-        poolSize = 10;
+        poolSize = 5;
         maxBatchSize = 10000;
     }
 
@@ -38,7 +38,7 @@ public class ProducerTest {
             executorPool.execute(() -> {
                 try {
                     for (; ; ) {
-                        int capacity = rnd.nextInt(maxBatchSize);
+                        int capacity = maxBatchSize;//rnd.nextInt(maxBatchSize);
                         if (capacity == 0) {
                             capacity = 1;
                         }

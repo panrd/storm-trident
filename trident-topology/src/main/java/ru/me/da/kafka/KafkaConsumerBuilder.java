@@ -68,7 +68,7 @@ public class KafkaConsumerBuilder {
             topicCountMap.put(topic, 1);
             Map<String, List<KafkaStream<byte[], byte[]>>> consumerMap = consumer.createMessageStreams(topicCountMap);
             List<KafkaStream<byte[], byte[]>> streams = consumerMap.get(topic);
-            executor = Executors.newFixedThreadPool(1);
+            executor = Executors.newSingleThreadExecutor();
             for (final KafkaStream<byte[], byte[]> stream : streams) {
                 executor.submit(() -> {
                     ConsumerIterator<byte[], byte[]> it = stream.iterator();
