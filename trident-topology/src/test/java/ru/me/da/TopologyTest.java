@@ -187,19 +187,5 @@ public class TopologyTest {
 
         logger.info("Shutdown local cluster");
         cluster.shutdown();
-
-        String historyName = "log-history";
-        Configuration conf = HBaseConfiguration.create();
-        HTable hTable = new HTable(conf, historyName);
-
-        ResultScanner rs = hTable.getScanner("metrics".getBytes());
-        for (Iterator<Result> it = rs.iterator(); it.hasNext(); ) {
-            Result r = it.next();
-            logger.info(new String(r.getValue("metrics".getBytes(), "count".getBytes())));
-            logger.info(new String(r.getValue("metrics".getBytes(), "rate".getBytes())));
-        }
-
-        hTable.close();
-
     }
 }
