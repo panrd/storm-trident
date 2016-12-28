@@ -6,10 +6,7 @@ import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
 import kafka.javaapi.consumer.ConsumerConnector;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Condition;
@@ -35,21 +32,21 @@ public class KafkaConsumerBuilder {
         props.put("zookeeper.session.timeout.ms", "400");
         props.put("zookeeper.sync.time.ms", "200");
         props.put("auto.commit.interval.ms", "1000");
+        props.put("auto.offset.reset", "smallest");
 
         consumer = Consumer.createJavaConsumerConnector(new ConsumerConfig(props));
         this.topic = topic;
     }
 
-    public String receiveMessage() throws InterruptedException {
+    public List<String> receiveMessages() throws InterruptedException {
 
-        final Lock messageLock = new ReentrantLock();
-        final Condition messageReceivedCondition = messageLock.newCondition();
-        final String[] result = new String[1];
+        Lock messageLock = new ReentrantLock();
+        Condition messageReceivedCondition = messageLock.newCondition();
+        List<String> messages = new ArrayList<>();
         messageLock.lock();
         try {
             open(value -> {
-                result[0] = new String(value);
-                System.out.println(result[0]);
+                messages.add(new String(value));
                 messageLock.lock();
                 try {
                     messageReceivedCondition.signalAll();
@@ -62,7 +59,7 @@ public class KafkaConsumerBuilder {
         } finally {
             messageLock.unlock();
         }
-        return result[0];
+        return messages;
     }
 
     public void open(MessageHandler messageHandler) {

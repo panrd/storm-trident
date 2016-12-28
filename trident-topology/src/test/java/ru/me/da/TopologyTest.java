@@ -24,12 +24,14 @@ import ru.me.da.util.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 /**
  * Created by Pavel Popov on 05.12.2016.
@@ -133,10 +135,11 @@ public class TopologyTest {
         logger.info("MESSAGE SENDED!!!");
 
         KafkaConsumerBuilder kcb = new KafkaConsumerBuilder(zk, testTopic);
-        String message = kcb.receiveMessage();
+        List<String> messages = kcb.receiveMessages();
         logger.info("MESSAGE RECEIVED!!!");
-
-        assertEquals(json, message);
+        logger.info("Received:" + messages.get(0));
+        logger.info("Send:" + json);
+        assertTrue(messages.contains(json));
     }
 
     @Test(testName = "Topology test", priority = 1)
@@ -167,7 +170,7 @@ public class TopologyTest {
         kpb.close();
 
         KafkaConsumerBuilder kcb = new KafkaConsumerBuilder(zk, alertTopic);
-        String message = kcb.receiveMessage();
+        String message = kcb.receiveMessages().get(0);
         logger.info("---RECEIVED---");
         logger.info(message);
         List<LogRate> rates = Utils.jsonToRateList(message);
