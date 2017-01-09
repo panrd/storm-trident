@@ -1,5 +1,7 @@
 package ru.me.da;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import ru.me.da.model.LogMessage;
 import ru.me.da.util.Utils;
@@ -11,6 +13,8 @@ import static org.testng.Assert.assertEquals;
  */
 public class UtilsTest {
 
+    private static final Logger logger = LoggerFactory.getLogger(UtilsTest.class);
+
     private String level = "ERROR";
     private String host = "hOSt";
     private String text = "tExt";
@@ -19,6 +23,7 @@ public class UtilsTest {
 
     @Test
     public void bidirectionalSerDesTest() {
+        logger.info("---===Utils test===---");
 
         LogMessage m1 = new LogMessage();
         m1.setLevel(level);

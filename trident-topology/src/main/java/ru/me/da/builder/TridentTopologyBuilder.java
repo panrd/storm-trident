@@ -13,7 +13,10 @@ import org.apache.storm.trident.windowing.WindowsStoreFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.me.da.factory.LogKafkaProduceFactory;
-import ru.me.da.proc.*;
+import ru.me.da.proc.KafkaLogConverter;
+import ru.me.da.proc.LevelExtractor;
+import ru.me.da.proc.LogEventCounter;
+import ru.me.da.proc.LogRateToJSON;
 import ru.me.da.spout.LogKafkaSpout;
 import ru.me.da.util.Const;
 import ru.me.da.util.StreamField;
@@ -65,14 +68,10 @@ public class TridentTopologyBuilder extends TridentTopology {
                             interval,
                             wsf,
                             StreamField.LOG_OBJECTS,
-                            new LogAggregator(),
-                            StreamField.RAW_LOG_OBJECTS)
-                    .aggregate(
-                            StreamField.RAW_LOG_OBJECTS,
                             new LogEventCounter(conf),
-                            StreamField.LOG_RATE)
+                            StreamField.RAW_LOG_OBJECTS)
                     .each(
-                            StreamField.LOG_RATE,
+                            StreamField.RAW_LOG_OBJECTS,
                             new LevelExtractor(Const.ERROR, 1),
                             StreamField.of(StreamField.FILTERED_LEVEL, StreamField.FILTERED_RATE))
                     .each(
