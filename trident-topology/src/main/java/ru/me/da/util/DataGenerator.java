@@ -75,9 +75,9 @@ public class DataGenerator {
         msg.setHost(hosts[rnd.nextInt(hosts.length)]);
 
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MINUTE, rnd.nextInt(59));
-        cal.set(Calendar.SECOND, rnd.nextInt(59));
-        cal.set(Calendar.MILLISECOND, rnd.nextInt(999));
+        cal.set(Calendar.MINUTE, 1);
+        cal.set(Calendar.SECOND, 1);
+        cal.set(Calendar.MILLISECOND, 111);
 
         msg.setTimestamp(cal.getTimeInMillis());
         msg.setText(texts[rnd.nextInt(texts.length)]);

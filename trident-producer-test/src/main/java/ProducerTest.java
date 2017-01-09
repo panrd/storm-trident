@@ -22,8 +22,8 @@ public class ProducerTest {
     static {
         rnd = new Random();
         LOG_TOPIC = "log-topic";
-        poolSize = 5;
-        maxBatchSize = 10000;
+        poolSize = 10;
+        maxBatchSize = 2000;
     }
 
     public static void main(String[] args) {
@@ -46,7 +46,7 @@ public class ProducerTest {
                         String msg2Topic = dg.getJson(capacity);
                         if (msg2Topic != null) {
                             kpb.send(LOG_TOPIC, msg2Topic);
-                            Thread.sleep(100);
+                            Thread.sleep(1000);
                         }
                     }
                 } catch (Exception ex) {
