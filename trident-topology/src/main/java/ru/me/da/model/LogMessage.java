@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Pavel Popov on 18.11.2016.
  */
-public class LogMessage implements Serializable {
+public class LogMessage {
     private Long timestamp;
     private String host;
     private String level;

@@ -38,6 +38,7 @@ public class UtilsTest {
         String testJson = Utils.objectToJson(m2);
         LogMessage m3 = Utils.jsonToLog(testJson);
 
+
         assertEquals(m1, m3);
     }
 }

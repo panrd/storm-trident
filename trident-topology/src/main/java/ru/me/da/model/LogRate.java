@@ -1,12 +1,11 @@
 package ru.me.da.model;
 
-import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Created by Pavel Popov on 23.11.2016.
  */
-public class LogRate implements Serializable {
+public class LogRate {
 
     /**
      * Тип метрики: {@value "host" или "level"}
